@@ -4,6 +4,12 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import "./globals.css";
 import { ConvexReactClient } from "convex/react";
 import * as SecureStore from "expo-secure-store";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 const convex = new ConvexReactClient(
@@ -44,13 +50,18 @@ const tokenCache = {
   },
 };
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <ClerkLoaded>
-          <Stack>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          </Stack>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack>
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            </Stack>
+          </ThemeProvider>
         </ClerkLoaded>
       </ConvexProviderWithClerk>
     </ClerkProvider>
