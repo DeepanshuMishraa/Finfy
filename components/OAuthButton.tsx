@@ -1,22 +1,19 @@
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
 import { useOAuth } from "@clerk/clerk-expo";
-import { Platform } from "react-native";
+import { Platform, TouchableOpacity, StyleSheet } from "react-native";
 import * as Linking from "expo-linking";
-import Button from "./Button";
-
 
 type Props = {
-  strategy: string,
-  children: React.ReactNode
-}
+  strategy: string;
+  children: React.ReactNode;
+};
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function OAuthButton({ strategy, children }: Props) {
   React.useEffect(() => {
     if (Platform.OS !== "android") return;
-
     void WebBrowser.warmUpAsync();
     return () => {
       if (Platform.OS !== "android") return;
@@ -30,7 +27,7 @@ export default function OAuthButton({ strategy, children }: Props) {
   const onPress = React.useCallback(async () => {
     try {
       const { createdSessionId, setActive } = await startOAuthFlow({
-        redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" }),
+        redirectUrl: Linking.createURL("/", { scheme: "myapp" }),
       });
 
       if (createdSessionId && setActive) {
@@ -42,8 +39,22 @@ export default function OAuthButton({ strategy, children }: Props) {
   }, []);
 
   return (
-    <Button onPress={onPress}>
-      { children }
-    </Button>
+    <TouchableOpacity onPress={onPress} style={styles.button}>
+      {children}
+    </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#4285F4",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+});

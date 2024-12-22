@@ -1,35 +1,63 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 6,
-    borderColor: "rgba(0, 0, 0, 0.11)"
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
-  screen: {
-    padding: 10,
-    display: "flex",
-    gap: 8,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
-  authScreen: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center'
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
-  authForm: {
-    padding: 18,
-    display: "flex",
-    gap: 8,
-    width: "100%"
+  content: {
+    width: "100%",
+    maxWidth: 400,
+    alignItems: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  }
-})
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#ffffff",
+    marginBottom: 10,
+    textAlign: "center",
+    fontFamily: "Satoshi-Bold",
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "#ffffff",
+    marginBottom: 30,
+    textAlign: "center",
+    fontFamily: "Satoshi-Regular",
+  },
+  buttonContainer: {
+    width: "100%",
+  },
+  googleButton: {
+    backgroundColor: "#4285F4",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 10,
+    fontFamily: "Satoshi-Bold",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

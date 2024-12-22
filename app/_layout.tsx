@@ -49,19 +49,39 @@ const tokenCache = {
     }
   },
 };
-export default function RootLayout() {
+
+function RootLayoutNav() {
+  const { isSignedIn, isLoaded } = useAuth();
   const colorScheme = useColorScheme();
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  return (
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "none",
+        }}
+      >
+        {isSignedIn ? (
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        )}
+      </Stack>
+    </ThemeProvider>
+  );
+}
+
+export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <ClerkLoaded>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Stack>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            </Stack>
-          </ThemeProvider>
+          <RootLayoutNav />
         </ClerkLoaded>
       </ConvexProviderWithClerk>
     </ClerkProvider>

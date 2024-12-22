@@ -1,9 +1,7 @@
-import { Redirect, Slot, Stack } from "expo-router";
+import { Redirect, Slot } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
-import { Tabs } from "expo-router";
 import React from "react";
 
-import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function AuthRoutesLayout() {
@@ -14,5 +12,5 @@ export default function AuthRoutesLayout() {
     return <Redirect href={"/"} />;
   }
 
-  return <Stack />;
+  return <Slot />;
 }
