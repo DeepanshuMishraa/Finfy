@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const createBudget = mutation({
   args: {
@@ -19,5 +19,19 @@ export const createBudget = mutation({
       category: args.category,
       tokenIdentifier: userId,
     });
+  },
+});
+
+export const getBudget = query({
+  async handler(ctx) {
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+    if (!userId) {
+      throw new ConvexError("User not authenticated");
+    }
+
+    return await ctx.db
+      .query("budget")
+      .withIndex("by_tokenIdentifier", (q) => q.eq("tokenIdentifier", userId))
+      .collect();
   },
 });

@@ -9,6 +9,7 @@ import Appbar from "@/components/Appbar";
 const Index = () => {
   return (
     <>
+      <StatusBar hidden={true} />
       <Appbar />
     </>
   );
