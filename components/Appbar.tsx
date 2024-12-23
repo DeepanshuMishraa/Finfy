@@ -7,20 +7,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { Link, Redirect } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Appbar() {
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded } = useAuth();
-
-  if (!isLoaded) {
-    return null;
-  }
-
-  if (!isSignedIn) {
-    return <Redirect href="/(auth)/sign-in" />;
-  }
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -32,13 +25,16 @@ export default function Appbar() {
         <View style={styles.buttons}>
           <Link href="/create-budget" asChild>
             <TouchableOpacity style={styles.createButton}>
-              <Ionicons name="add-outline" size={20} color="#FFFFFF" />
+              <Ionicons name="add" size={20} color="#FFFFFF" />
+              <Text style={styles.createButtonText}>Create</Text>
             </TouchableOpacity>
           </Link>
           {isSignedIn && (
             <TouchableOpacity
               style={styles.signOutButton}
-              onPress={() => signOut()}
+              onPress={() => {
+                signOut();
+              }}
             >
               <Ionicons name="log-out-outline" size={20} color="#4A90E2" />
               <Text style={styles.signOutButtonText}>Sign Out</Text>
