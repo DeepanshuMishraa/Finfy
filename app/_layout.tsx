@@ -60,18 +60,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          animation: "none",
-        }}
-      >
-        {isSignedIn ? (
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        ) : (
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        )}
-      </Stack>
+      {isSignedIn ? <Slot /> : <Stack.Screen name="(auth)" />}
     </ThemeProvider>
   );
 }
