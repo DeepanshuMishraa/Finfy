@@ -10,6 +10,11 @@
     "production": {
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "CONVEX_DEPLOYMENT": "dev:agile-robin-188",
+        "EXPO_PUBLIC_CONVEX_URL": "https://agile-robin-188.convex.cloud",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZW5qb3llZC1rcmlsbC0xNi5jbGVyay5hY2NvdW50cy5kZXYk"
       }
     }
   }
