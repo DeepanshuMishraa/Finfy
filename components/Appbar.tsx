@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth, useClerk } from "@clerk/clerk-expo";
 import {
   StyleSheet,
@@ -7,56 +7,79 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { Link, SplashScreen } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
 export default function Appbar() {
   const { signOut } = useClerk();
-  const { isSignedIn, isLoaded } = useAuth();
-  const router = useRouter();
+  const { isSignedIn } = useAuth();
+
+  const [loaded, error] = useFonts({
+    "Supreme-Variable": require("@/assets/fonts/Supreme-Variable.ttf"),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Ionicons name="wallet-outline" size={24} color="#4A90E2" />
-          <Text style={styles.logo}>Finfy</Text>
+      <StatusBar hidden={true} />
+      <LinearGradient
+        colors={["#4A00E0", "#8E2DE2"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.container}
+      >
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Ionicons name="wallet-outline" size={24} color="#FFFFFF" />
+            <Text style={styles.logo}>Finfy</Text>
+          </View>
+          <View style={styles.buttons}>
+            <Link href="/create-budget" asChild>
+              <TouchableOpacity style={styles.iconButton}>
+                <Ionicons name="add-outline" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+            </Link>
+            {isSignedIn && (
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => {
+                  signOut();
+                }}
+              >
+                <Ionicons name="log-out-outline" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-        <View style={styles.buttons}>
-          <Link href="/create-budget" asChild>
-            <TouchableOpacity style={styles.createButton}>
-              <Ionicons name="add" size={20} color="#FFFFFF" />
-              <Text style={styles.createButtonText}>Create</Text>
-            </TouchableOpacity>
-          </Link>
-          {isSignedIn && (
-            <TouchableOpacity
-              style={styles.signOutButton}
-              onPress={() => {
-                signOut();
-              }}
-            >
-              <Ionicons name="log-out-outline" size={20} color="#4A90E2" />
-              <Text style={styles.signOutButtonText}>Sign Out</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
+      </LinearGradient>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: "black",
+    backgroundColor: "#4A00E0",
   },
   container: {
-    padding: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  content: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
   },
   logoContainer: {
     flexDirection: "row",
@@ -65,39 +88,16 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#4A90E2",
+    color: "#FFFFFF",
     marginLeft: 8,
+    fontFamily: "Supreme-Variable",
   },
   buttons: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 16,
   },
-  createButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#4A90E2",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  createButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
-    marginLeft: 4,
-  },
-  signOutButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#4A90E2",
-  },
-  signOutButtonText: {
-    color: "#4A90E2",
-    fontWeight: "600",
-    marginLeft: 4,
+  iconButton: {
+    padding: 8,
   },
 });

@@ -15,9 +15,11 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
+
       <Appbar />
+
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <TotalSpendCard totalSpent={totalSpent} />
+        <TotalSpendCard totalSpent={totalSpent} budget={5000} />
         {spent?.map((budget) => (
           <BudgetCard
             key={budget._id}

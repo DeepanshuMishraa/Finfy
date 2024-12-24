@@ -5,12 +5,14 @@ import React from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function AuthRoutesLayout() {
-  const colorScheme = useColorScheme();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
 
+  if (!isLoaded) {
+    return null;
+  }
   if (isSignedIn) {
     return <Redirect href={"/"} />;
   }
 
-  return <Stack />;
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

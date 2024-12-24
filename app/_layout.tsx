@@ -1,5 +1,6 @@
+// app/layout.tsx
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import "./globals.css";
 import { ConvexReactClient } from "convex/react";
@@ -10,6 +11,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
+import { View, ActivityIndicator } from "react-native";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 const convex = new ConvexReactClient(
@@ -51,16 +53,20 @@ const tokenCache = {
 };
 
 function RootLayoutNav() {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isLoaded } = useAuth();
   const colorScheme = useColorScheme();
 
   if (!isLoaded) {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {isSignedIn ? <Slot /> : <Stack.Screen name="(auth)" />}
+      <Slot />
     </ThemeProvider>
   );
 }
